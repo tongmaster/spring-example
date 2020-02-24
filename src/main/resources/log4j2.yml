@@ -1,0 +1,75 @@
+Configutation:
+  monitorInterval: 60
+
+  Properties:
+    Property:
+      - name: dir
+        value: log
+      - name: file-name
+        value: application.log
+      - name: console-pattern
+        value: "%highlight{[%-5p]} %d %c{1} > %m%n%ex{short}"
+      - name: file-pattern
+        value: "[%-5p] %d %c{1} > %m%n%ex{short}"
+
+  Appenders:
+    Console:
+      name: Console_Appender
+      target: SYSTEM_OUT
+      PatternLayout:
+        pattern: ${console-pattern}
+
+    RollingRandomAccessFile:
+      name: RollingRandomAccessFile_Appender
+      fileName: '${dir}/${file-name}'
+      filePattern: "${dir}/${file-name}-%d{MM-dd-yy}.log.gz"
+      immediateFlush: false
+      PatternLayout:
+        pattern: ${file-pattern}
+
+      Policies:
+        TimeBasedTriggeringPolicy:
+          interval: 12
+        SizeBasedTriggeringPolicy:
+          size: 20 MB
+
+      DefaultRolloverStrategy:
+        Delete:
+          basePath: ${dir}
+          maxDepth: 2
+          IfFileName:
+            glob: "*/${file-name}*log.gz"
+          IfLastModified:
+            age: 7D
+
+  Loggers:
+    AsyncRoot:
+      includeLocation: false
+      level: warn
+      AppenderRef:
+        - ref: Console_Appender
+        - ref: RollingRandomAccessFile_Appender
+
+    AsyncLogger:
+      - name: com.javaverse.course.springninja
+        additivity: false
+        level: info
+        includeLocation: false
+        AppenderRef:
+          - ref: Console_Appender
+          - ref: RollingRandomAccessFile_Appender
+
+      - name: org.hibernate.engine.internal
+        level: info
+        additivity: false
+        AppenderRef:
+          - ref: Console_Appender
+          - ref: RollingRandomAccessFile_Appender
+
+      - name: org.springframework.boot.web.servlet
+        level: info
+        additivity: false
+        AppenderRef:
+          - ref: Console_Appender
+          - ref: RollingRandomAccessFile_Appender
+
