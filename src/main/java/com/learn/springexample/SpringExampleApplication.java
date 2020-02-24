@@ -21,42 +21,23 @@ public class SpringExampleApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) {
-		// INSERT
-		log.info(() -> "BEGIN INSERT");
-		Product p = new Product();
-		p.setCode("C01");
-		p.setName("INSERT");
-		p = repo.saveAndFlush(p);
-		log.info(() -> "AFTER INSERT : " + repo.findAll());
 
-		// UPDATE BY JPA METHOD
-		log.info(() -> "BEGIN UPDATE BY JPA METHOD");
-		p.setName("JPA METHOD");
-		repo.saveAndFlush(p);
-		log.info(() -> "AFTER UPDATE BY JPA METHOD : " + repo.findAll());
+		Product p1 = new Product();
+		p1.setName("AAA");
+		p1.setCode("01");
+		repo.save(p1);
 
+		Product p2 = new Product();
+		p2.setName("BBB");
+		p2.setCode("02");
+		p2 = repo.save(p2);
 
-		// UPDATE BY JPQL
-		log.info(() -> "BEGIN UPDATE BY JPQL");
-		try {
-			repo.jpqlUpdate("JPQL", "C01");
-			log.info(() -> "AFTER UPDATE BY JPQL : " + repo.findAll());
-		} catch (Exception e) {
-			log.error(e.getMessage());
-		}
+		p2.setName("BBB-1");
+		repo.save(p2);
 
-		// UPDATE BY SQL
-		log.info(() -> "BEGIN UPDATE BY SQL");
-		try {
-			repo.sqlUpdate("SQL", "C01");
-			log.info(() -> "AFTER UPDATE BY SQL : " + repo.findAll());
-		} catch (Exception e) {
-			log.error(e.getMessage());
-		}
-
-
-		log.info("END");
+		System.out.println(repo.findAll());
 
 	}
+
 
 }
