@@ -29,45 +29,15 @@ public class SpringExampleApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) {
-
 		Product product = new Product();
-		product.setCode("1001");
+		product.setCode("P001");
 		product.setName("Coffee");
 		product.setStatus(Product.Status.APPROVED);
-		productRepo.save(product);
-
-
-		log.debug("Save Order");
-		OrderId orderId = new OrderId();
-		orderId.setId(1l);
-		orderId.setProductId(product.getId());
-		Order order = new Order();
-		order.setOrderId(orderId);
-		order.setQuantity(1);
-		order = orderRepo.save(order);
-
-
-		log.debug("Update Order");
-		order.setDetails("too many lines of details");
-		orderRepo.save(order);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+		product.getAliasNames().add("Java");
+		product.getAliasNames().add("Cuppa");
+		product.getAliasNames().add("Caffeine");
+		product = productRepo.save(product);
+		log.debug(product);
 
 
 //        Product product2 = new Product();
@@ -90,8 +60,8 @@ public class SpringExampleApplication implements CommandLineRunner {
 //        productRepo.findAll().stream().forEach(p->{
 //            System.out.println(p.getName()+"\tStatus :\t"+p.getStatus());
 //        });
-	}
 
+	}
 
 
 }

@@ -6,12 +6,15 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Index;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.stream.Stream;
 
 @Data
@@ -31,8 +34,15 @@ public class Product extends CommonEntity {
     private String name;
     private String detail;
 
+
+    @ElementCollection
+    @Column(name = "alias_name", length = 50)
+//    @CollectionTable(name="products_alias_names_custom",joinColumns = @JoinColumn(name = "products_id_custom"))
+    private Set<String> aliasNames = new HashSet<>();
+
+
     @Column(length = 1)
-    Status status;
+    private Status status;
 
     @RequiredArgsConstructor
     public enum Status {
@@ -50,7 +60,10 @@ public class Product extends CommonEntity {
 
         }
     }
+
+
 }
+
 
 
 
