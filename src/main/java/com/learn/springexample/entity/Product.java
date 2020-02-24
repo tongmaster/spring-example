@@ -1,11 +1,11 @@
 package com.learn.springexample.entity;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 import javax.persistence.Column;
-import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -31,8 +31,6 @@ public class Product extends CommonEntity {
     private String name;
     private String detail;
 
-    //    @Enumerated(EnumType.STRING)
-//    @Convert(converter = ProductStatusConverter.class)
     @Column(length = 1)
     Status status;
 
@@ -51,11 +49,8 @@ public class Product extends CommonEntity {
                     .findAny().orElseThrow(() -> new IllegalArgumentException("The code : " + code + " is illegal argument."));
 
         }
-
-
     }
-
-
 }
+
 
 

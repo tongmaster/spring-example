@@ -53,7 +53,7 @@ Configutation:
     AsyncLogger:
       - name: com.javaverse.course.springninja
         additivity: false
-        level: info
+        level: debug
         includeLocation: false
         AppenderRef:
           - ref: Console_Appender
