@@ -1,22 +1,16 @@
 package com.learn.springexample.entity;
 
-/*
-Composite class rules
-    - public class
-    - public no-arg constructor
-    - Implement Serializable
-    - Override equals , hashCode
-    - Can be use @EmbeddedId / @IdClass
-*/
-
-
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.Embeddable;
 import java.io.Serializable;
 
-@Embeddable
 @Data
+@Embeddable
+@AllArgsConstructor
+@NoArgsConstructor
 public class OrderId implements Serializable {
 
     private long id;

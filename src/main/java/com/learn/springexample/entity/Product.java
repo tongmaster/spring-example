@@ -1,42 +1,46 @@
 package com.learn.springexample.entity;
+
 import lombok.Data;
 
-import javax.persistence.*;
-import java.time.LocalDateTime;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Index;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
 @Data
 @Entity(name = "products")
 @SequenceGenerator(name = "products_seq")
-@Table(indexes = {@Index(name = "products_idx_code_unique", columnList = "code", unique = true)})
-
-public class Product {
+@Table(indexes = {
+        @Index(name = "products_idx_code_unique", columnList = "code", unique = true),
+        @Index(name = "products_idx_status", columnList = "status")
+})
+public class Product extends CommonEntity{
 
     @Id
     @GeneratedValue(generator = "products_seq")
-    private Long id;
+    private long id;
     private String code;
     private String name;
     private String detail;
-    private LocalDateTime createdDate;
-    private LocalDateTime updatedDate;
 
-    @PrePersist
-    private void prePersist() {
-        setCreatedDate(LocalDateTime.now());
+    @Enumerated(EnumType.STRING)
+    Status status;
+
+    public enum Status {
+        APPROVED,
+        NOT_APPROVED,
+        PENDING
     }
 
-    @PreUpdate
-    private void preUpdate() {
-        setUpdatedDate(LocalDateTime.now());
-    }
 
-    // Tips
-    @Transient
-    private String excludedField1;
 
-    private transient String excludedField2;
 
-    private static String excludedField3;
 
 
 }
+
+
