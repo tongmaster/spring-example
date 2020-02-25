@@ -1,13 +1,15 @@
 package com.learn.springexample.entity;
 
-import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Index;
@@ -17,7 +19,9 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Stream;
 
-@Data
+@Getter
+@Setter
+@ToString
 @Entity(name = "products")
 @EqualsAndHashCode(callSuper = false)
 @SequenceGenerator(name = "products_seq")
@@ -35,9 +39,8 @@ public class Product extends CommonEntity {
     private String detail;
 
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     @Column(name = "alias_name", length = 50)
-//    @CollectionTable(name="products_alias_names_custom",joinColumns = @JoinColumn(name = "products_id_custom"))
     private Set<String> aliasNames = new HashSet<>();
 
 
@@ -63,7 +66,4 @@ public class Product extends CommonEntity {
 
 
 }
-
-
-
 
