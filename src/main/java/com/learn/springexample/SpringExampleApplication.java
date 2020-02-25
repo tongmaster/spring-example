@@ -1,10 +1,8 @@
 package com.learn.springexample;
 
-import com.learn.springexample.entity.Order;
-import com.learn.springexample.entity.OrderId;
 import com.learn.springexample.entity.Product;
-import com.learn.springexample.repo.OrderRepo;
-import com.learn.springexample.repo.ProductRepo;
+import com.learn.springexample.repo.OrderRepository;
+import com.learn.springexample.repo.ProductRepository;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -18,9 +16,9 @@ import org.springframework.scheduling.annotation.EnableAsync;
 @SpringBootApplication
 public class SpringExampleApplication implements CommandLineRunner {
 	@Autowired
-	ProductRepo productRepo;
+	ProductRepository productRepo;
 	@Autowired
-	OrderRepo orderRepo;
+	OrderRepository orderRepo;
 
 	public static void main(String[] args) {
 		System.err.close();
@@ -29,6 +27,7 @@ public class SpringExampleApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) {
+
 		Product product = new Product();
 		product.setCode("P001");
 		product.setName("Coffee");
@@ -36,7 +35,7 @@ public class SpringExampleApplication implements CommandLineRunner {
 		product.getAliasNames().add("Java");
 		product.getAliasNames().add("Cuppa");
 		product.getAliasNames().add("Caffeine");
-		product = productRepo.save(product);
+        product = productRepo.save(product);
 		log.debug(product);
 
 
@@ -60,8 +59,9 @@ public class SpringExampleApplication implements CommandLineRunner {
 //        productRepo.findAll().stream().forEach(p->{
 //            System.out.println(p.getName()+"\tStatus :\t"+p.getStatus());
 //        });
-
 	}
+
+
 
 
 }
