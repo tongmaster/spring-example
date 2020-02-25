@@ -64,6 +64,14 @@ public class Product extends CommonEntity {
         }
     }
 
+    public Product(String code, String name, Status status) {
+        this.code = code;
+        this.name = name;
+        this.status = status;
+    }
+
+    public Product(){}
+
 
 }
 
