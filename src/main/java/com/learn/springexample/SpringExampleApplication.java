@@ -49,33 +49,26 @@ public class SpringExampleApplication implements CommandLineRunner {
 		repo.saveAll(Arrays.asList(
 				new Product("101", "A1", Product.Status.APPROVED),
 				new Product("102", "a2", Product.Status.APPROVED),
-				new Product("103", "B1", Product.Status.PENDING),
-				new Product("104", "b2", Product.Status.NOT_APPROVED)));
-
+				new Product("103", "B1", Product.Status.PENDING,"Hi"),
+				new Product("104", "b2", Product.Status.NOT_APPROVED, "Hello")));
 
 		sout("Count number of All Products : " + repo.count());
 
 		sout("Find all");
 		repo.findAll().forEach(System.out::println);
 
-		sout("Find all 'APPROVED' Products ");
-		repo.findAllByStatus(Product.Status.APPROVED).get().forEach(System.out::println);
+		sout("Fetch Product Where Detail Not Null");
+		repo.fetchDetailNotNull().get().forEach(System.out::println);
 
-		sout("Find all 'APPROVED' Products order by Id desc");
-		repo.findAllByStatusOrderByIdDesc(Product.Status.APPROVED).get().forEach(System.out::println);
+		sout("Fetch Product Where Detail Length > 2");
+		repo.fetchDetailLengthGreaterThan2().get().forEach(System.out::println);
 
-		sout("Find all Products that name contains 'b' ");
-		repo.findAllByNameContaining("b").get().forEach(System.out::println);
+		sout("Custom Fetch Product to Pojo");
+		repo.customFetchProductToPojo().forEach(System.out::println);
 
-		sout("Find all Products that name contains 'b or B' ");
-		repo.findAllByNameContainingIgnoreCase("b").get().forEach(System.out::println);
-
-		sout("Find all Products that code contains '0' and name endsWith '2' ");
-		repo.findAllByCodeContainingAndNameEndingWith("0", "2").get().forEach(System.out::println);
-
-		sout("Find all Products that code equals('101') or (code equals('103') and name equals('B1') ");
-		repo.findAllByCodeOrCodeAndName("101", "103", "B1").get().forEach(System.out::println);
 	}
+
+
 
 	private void sout(String message) {
 		IntStream.range(0, 3).forEach(i -> System.out.println());

@@ -1,27 +1,26 @@
 package com.learn.springexample.repo;
 
 
+import com.learn.springexample.dto.Pojo;
 import com.learn.springexample.entity.Product;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 
 @Repository
 public interface ProductRepository extends CommonRepository<Product, Long> {
 
-    Optional<Collection<Product>> findAllByStatus(Product.Status status);
 
-    Optional<Collection<Product>> findAllByStatusOrderByIdDesc(Product.Status status);
+    Optional<List<Product>> fetchDetailNotNull();
 
-    Optional<Collection<Product>> findAllByNameContaining(String name);
+    Optional<List<Product>> fetchDetailLengthGreaterThan2();
 
-    Optional<Collection<Product>> findAllByNameContainingIgnoreCase(String name);
-
-    Optional<Collection<Product>> findAllByCodeContainingAndNameEndingWith(String code, String name);
-
-    Optional<Collection<Product>> findAllByCodeOrCodeAndName(String whereCode, String orCode, String andName);
+    @Query(nativeQuery = true)
+    List<Pojo> customFetchProductToPojo();
 
 }
 
