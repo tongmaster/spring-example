@@ -32,14 +32,20 @@ public class SpringExampleApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) {
-		perform();
+		try {
+			perform();
+		} catch (Exception e) {
+			log.error(e.getMessage());
+			e.printStackTrace();
+		}
+
 	}
 
 
-	private void perform() {
-		IntStream.range(0,10).forEach(i->info(" "));
-		info("Inserting multiple Products");
 
+	private void perform() {
+
+		System.out.println("Inserting multiple Products");
 		repo.saveAll(Arrays.asList(
 				new Product("101", "A1", Product.Status.APPROVED),
 				new Product("102", "a2", Product.Status.APPROVED),
@@ -47,58 +53,38 @@ public class SpringExampleApplication implements CommandLineRunner {
 				new Product("104", "b2", Product.Status.NOT_APPROVED)));
 
 
-		info("Count number of All Products : " + repo.count());
+		sout("Count number of All Products : " + repo.count());
+
+		sout("Find all");
 		repo.findAll().forEach(System.out::println);
 
-		info("Find all 'APPROVED' Products ");
-		Product probe1 = new Product();                       // Create Probe
-		probe1.setStatus(Product.Status.APPROVED);
-		ExampleMatcher matcher1 = ExampleMatcher.matching()   // Create ExampleMatcher
-				.withIgnorePaths("id")
-				.withIgnorePaths("version");
-		Example<Product> example1 = Example.of(probe1, matcher1);       // Create Example
-		repo.findAll(example1).forEach(System.out::println);  // Find All By QBE
+		sout("Find all 'APPROVED' Products ");
+		repo.findAllByStatus(Product.Status.APPROVED).get().forEach(System.out::println);
 
+		sout("Find all 'APPROVED' Products order by Id desc");
+		repo.findAllByStatusOrderByIdDesc(Product.Status.APPROVED).get().forEach(System.out::println);
 
+		sout("Find all Products that name contains 'b' ");
+		repo.findAllByNameContaining("b").get().forEach(System.out::println);
 
+		sout("Find all Products that name contains 'b or B' ");
+		repo.findAllByNameContainingIgnoreCase("b").get().forEach(System.out::println);
 
+		sout("Find all Products that code contains '0' and name endsWith '2' ");
+		repo.findAllByCodeContainingAndNameEndingWith("0", "2").get().forEach(System.out::println);
 
-		info("Find all Products that name contains 'a or A' ");
-		Product probe2 = new Product();                            // Create Probe
-		probe2.setName("a");
-		ExampleMatcher matcher2 = ExampleMatcher.matching()        // Create ExampleMatcher
-				.withIgnorePaths("id")
-				.withIgnorePaths("version")
-				.withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING)
-				.withIgnoreCase();
-		Example<Product> example2 = Example.of(probe2, matcher2);   // Create Example
-		repo.findAll(example2).forEach(System.out::println);       // Find All By QBE
-
-
-
-
-
-		info("Find all Products that code contains '0' and name startsWith 'b' ");
-		Product probe3 = new Product();                            // Create Probe
-		probe3.setCode("0");
-		probe3.setName("b");
-		ExampleMatcher matcher3 = ExampleMatcher.matching()        // Create ExampleMatcher
-				.withIgnorePaths("id")
-				.withIgnorePaths("version")
-				.withMatcher("code", matcher -> matcher.contains())
-				.withMatcher("name", matcher -> matcher.startsWith());
-
-		Example<Product> example3 = Example.of(probe3, matcher3);   // Create Example
-		repo.findAll(example3).forEach(System.out::println);       // Find All By QBE
-
-
+		sout("Find all Products that code equals('101') or (code equals('103') and name equals('B1') ");
+		repo.findAllByCodeOrCodeAndName("101", "103", "B1").get().forEach(System.out::println);
 	}
 
+	private void sout(String message) {
+		IntStream.range(0, 3).forEach(i -> System.out.println());
+		System.out.println(message);
+	}
 
 	private void info(String message) {
 		log.info(() -> message);
 	}
-
 
 
 
